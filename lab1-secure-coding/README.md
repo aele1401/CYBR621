@@ -2,7 +2,7 @@
 
 ## Overview
 
-This lab evaluates two AI coding assistants on the same secure systems programming task. The objective is to compare the generated C implementations for correctness, security, code quality, efficiency, and compliance with the requirements.
+This lab evaluates three AI models on the same secure systems programming task. The objective is to compare the generated C implementations for correctness, security, code quality, efficiency, and compliance with the requirements.
 
 The task is to create a secure Linux C program that copies one file to another using POSIX system calls.
 
@@ -14,20 +14,21 @@ The task is to create a secure Linux C program that copies one file to another u
 - Language: C
 - Compiler flags: `-Wall -Wextra -pedantic`
 
-## AI Coding Assistants
+## AI Models
 
-The two AI coding agents used for the formal comparison were given the exact same prompt:
+The same prompt was used with three AI models:
 
-1. OpenAI Codex — saved as `Codex.c`
-2. GitHub Copilot — saved as `Copilot.c`
+1. ChatGPT - saved as `ChatGPT.c`
+2. GitHub Copilot - saved as `Copilot.c`
+3. OpenAI Codex - saved as `Codex.c`
 
 The original AI-generated implementations were preserved without modification for comparison.
 
-`ChatGPT.c` is also preserved as an additional artifact from the initial attempt. It is not included as one of the two formal coding agents because the instructor clarified that ChatGPT is not considered a coding agent for this assignment.
+The formal coding-agent comparison focuses on GitHub Copilot and OpenAI Codex, following clarification that ChatGPT is not considered a coding agent. The ChatGPT implementation is preserved as an additional third model output and provides additional context for evaluating differences in AI-generated code.
 
 ## Task
 
-The complete prompt provided to both coding agents is stored in `prompt.md`.
+The complete prompt provided to all three AI models is stored in `prompt.md`.
 
 The program was required to:
 
@@ -61,6 +62,14 @@ Each implementation was manually reviewed for:
 The implementations were compiled and tested using GCC. Testing included normal file-copy operations, destination-file overwrite prevention, invalid input, empty files, and additional edge cases.
 
 ## Findings
+
+### ChatGPT
+
+The ChatGPT implementation correctly used `O_CREAT | O_EXCL` with mode `0600`, handled interrupted reads and writes, supported partial writes, and avoided unsafe C library functions.
+
+Its main weaknesses were limited error reporting and minimal user feedback. The implementation was simple and straightforward but less polished from a usability perspective.
+
+The implementation is preserved as `ChatGPT.c` as an additional model output and was not used as one of the two formal coding-agent submissions.
 
 ### OpenAI Codex
 
