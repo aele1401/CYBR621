@@ -1,4 +1,3 @@
-/* copy.c: securely copy SOURCE to DESTINATION */
 #include <errno.h>
 #include <fcntl.h>
 #include <stddef.h>
