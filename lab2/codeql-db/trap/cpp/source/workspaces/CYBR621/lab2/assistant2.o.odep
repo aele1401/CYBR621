@@ -1,0 +1,13 @@
+// Current directory: /workspaces/CYBR621/lab2
+// Command: /home/codespace/.local/share/gh/extensions/gh-codeql/dist/release/v2.27.1/cpp/tools/linux64/extractor --assembler --codeql-assembler-executable /usr/bin/as --64 -o assistant2.o /tmp/ccgxWVim.s
+// Processed command line: 
+// Generated for assembler
+TRAP dependencies 1.2
+
+OBJECTS
+ac002f0a7568b9a1
+
+
+INPUT_OBJECTS
+0d5fdc5f23729a84
+/workspaces/CYBR621/lab2/assistant2.o

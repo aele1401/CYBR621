@@ -1,0 +1,1 @@
+{"timestamp":"2026-09-23T01:16:40.270519081Z","source":{"id":"cli/database/create","name":"CodeQL CLI: database create"},"plaintextMessage":"A fatal error occurred: Exit status 1 from command: [gcc, -Wall, -Wextra, -Wpedantic, -c, assistant1.c, assistant2.c]","severity":"error","visibility":{"telemetry":false},"attributes":{"exitCode":2}}

@@ -1,0 +1,4 @@
+[E 01:16:40 45966] CodeQL C/C++ Extractor 2.27.1
+[E 01:16:40 45966] Current directory: /workspaces/CYBR621/lab2
+[E 01:16:40 45966] Command: /home/codespace/.local/share/gh/extensions/gh-codeql/dist/release/v2.27.1/cpp/tools/linux64/extractor --assembler --codeql-assembler-executable /usr/bin/as --64 -o assistant2.o /tmp/ccgxWVim.s
+[E 01:16:40 45966] Extractor exited after mimicking assembler

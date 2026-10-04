@@ -1,0 +1,12 @@
+---
+sourceLocationPrefix: /workspaces/CYBR621/lab2
+baselineLinesOfCode: 5217
+unicodeNewlines: false
+columnKind: utf8
+primaryLanguage: cpp
+creationMetadata:
+  cliVersion: 2.27.1
+  creationTime: 2026-10-04T01:45:24.298233270Z
+overlayBaseDatabase: false
+overlayDatabase: false
+finalised: true

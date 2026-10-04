@@ -1,0 +1,11 @@
+[E 01:16:40 45967] CodeQL C/C++ Extractor 2.27.1
+[E 01:16:40 45967] Current directory: /workspaces/CYBR621/lab2
+[E 01:16:40 45967] Command: /home/codespace/.local/share/gh/extensions/gh-codeql/dist/release/v2.27.1/cpp/tools/linux64/extractor --mimic /usr/bin/gcc -Wall -Wextra -Wpedantic -c assistant1.c assistant2.c
+[E 01:16:40 45967] Checking whether C compilation already happened.
+[E 01:16:40 45967] Checking for tag c-compilation-happened
+[E 01:16:40 45967] Checking CODEQL_TRACER_DB_ID 000000000000B34D_0000000000000003
+[E 01:16:40 45967] Locking DB /workspaces/CYBR621/lab2/codeql-db/working/tags.db
+[E 01:16:40 45967] Locked DB /workspaces/CYBR621/lab2/codeql-db/working/tags.db
+[E 01:16:40 45967] Unlocking DB
+[E 01:16:40 45967] Unlocked DB
+[E 01:16:40 45967] Exiting as C compilation already happened.

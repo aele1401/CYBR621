@@ -1,0 +1,30 @@
+[2026-09-23 01:26:49] This is codeql database analyze ./codeql-db-assistant2 codeql/cpp-queries:codeql-suites/cpp-security-and-quality.qls --format=sarif-latest --output=codeql-results.sarif --download
+[2026-09-23 01:26:49] Log file was started late.
+[2026-09-23 01:26:49] [DETAILS] database analyze> Downloading queries...
+[2026-09-23 01:26:49] Running plumbing command: codeql pack download --format json --qlconfig-file=/workspaces/CYBR621/lab2/qlconfig.yml -- codeql/cpp-queries:codeql-suites/cpp-security-and-quality.qls
+[2026-09-23 01:26:49] [PROGRESS] pack download> Package specifications to check for download: codeql/cpp-queries:codeql-suites/cpp-security-and-quality.qls
+[2026-09-23 01:26:49] Calling plumbing command: codeql resolve queries --qlconfig-file=/workspaces/CYBR621/lab2/qlconfig.yml --format installedpacks codeql/cpp-queries:codeql-suites/cpp-security-and-quality.qls
+[2026-09-23 01:26:50] Plumbing command codeql resolve queries completed:
+                      {
+                        "installedPacks" : [
+                          "codeql/cpp-queries@latest"
+                        ]
+                      }
+[2026-09-23 01:26:50] [DETAILS] pack download> Packaging> Requesting package versions of codeql/cpp-queries from https://ghcr.io/v2/codeql/cpp-queries/tags/list?n=100
+[2026-09-23 01:26:50] [DETAILS] pack download> Packaging> Requesting package versions of codeql/cpp-queries from https://ghcr.io/v2/codeql/cpp-queries/tags/list?n=100&last=1.5.4
+[2026-09-23 01:26:50] [DETAILS] pack download> Packaging> Downloading package to '/tmp/codeql-packaging15414918135159582488/.cache/0/codeql/cpp-queries.tgz'
+[2026-09-23 01:26:50] [DETAILS] pack download> Packaging> GET Blob 'https://ghcr.io/v2/codeql/cpp-queries/blobs/sha256:ead58b76b87e6460fb7f148f6208244ecf0ab9bebd924d50526446ebbcba4b1e'
+[2026-09-23 01:26:51] [DETAILS] pack download> Packaging> RESPONSE 'HTTP/1.1 200 OK'
+[2026-09-23 01:26:51] [DETAILS] pack download> Packaging> Downloading package to '/tmp/codeql-packaging15414918135159582488/.cache/0/codeql/cpp-queries.tgz'
+[2026-09-23 01:26:51] [DETAILS] pack download> Unzipping package to '/home/codespace/.codeql/packages/codeql/cpp-queries/1.9.0'
+[2026-09-23 01:26:52] Plumbing command codeql pack download completed.
+[2026-09-23 01:26:52] [PROGRESS] database analyze> Running queries.
+[2026-09-23 01:26:52] Running plumbing command: codeql database run-queries --evaluator-log-level=5 --warnings=show --qlconfig-file=/workspaces/CYBR621/lab2/qlconfig.yml --dynamic-join-order-mode=none --no-rerun --interpret-passthrough=null,--format=sarif-latest,-o=/workspaces/CYBR621/lab2/codeql-results.sarif,--max-paths=4,--csv-location-format=line-column,--print-diagnostics-summary,--print-metrics-summary,--qlconfig-file=/workspaces/CYBR621/lab2/qlconfig.yml,--,/workspaces/CYBR621/lab2/codeql-db-assistant2,codeql/cpp-queries:codeql-suites/cpp-security-and-quality.qls -- /workspaces/CYBR621/lab2/codeql-db-assistant2 codeql/cpp-queries:codeql-suites/cpp-security-and-quality.qls
+[2026-09-23 01:26:52] Calling plumbing command: codeql resolve ram --dataset=/workspaces/CYBR621/lab2/codeql-db-assistant2/db-cpp --format=json
+[2026-09-23 01:26:52] Plumbing command codeql resolve ram completed:
+                      [
+                        "-J-Xmx1253M"
+                      ]
+[2026-09-23 01:26:52] Chaining via /tmp/codeql.pfYvprHa to plumbing: execute queries -J-Xmx1253M --verbosity=progress --logdir=/workspaces/CYBR621/lab2/codeql-db-assistant2/log --evaluator-log-level=5 --warnings=show --qlconfig-file=/workspaces/CYBR621/lab2/qlconfig.yml --dynamic-join-order-mode=none --no-rerun --interpret-passthrough=null,--format=sarif-latest,-o=/workspaces/CYBR621/lab2/codeql-results.sarif,--max-paths=4,--csv-location-format=line-column,--print-diagnostics-summary,--print-metrics-summary,--qlconfig-file=/workspaces/CYBR621/lab2/qlconfig.yml,--,/workspaces/CYBR621/lab2/codeql-db-assistant2,codeql/cpp-queries:codeql-suites/cpp-security-and-quality.qls --output=/workspaces/CYBR621/lab2/codeql-db-assistant2/results -- /workspaces/CYBR621/lab2/codeql-db-assistant2/db-cpp codeql/cpp-queries:codeql-suites/cpp-security-and-quality.qls
+[2026-09-23 01:26:52] Plumbing command codeql database run-queries completed with status 70.
+[2026-09-23 01:26:52] Exiting with code 70

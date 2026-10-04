@@ -1,0 +1,45 @@
+---
+sourceLocationPrefix: /workspaces/CYBR621/lab2
+baselineLinesOfCode: 91
+unicodeNewlines: false
+columnKind: utf8
+primaryLanguage: cpp
+inProgress:
+  primaryLanguage: cpp
+  installedExtractors:
+    rust:
+     - /home/codespace/.local/share/gh/extensions/gh-codeql/dist/release/v2.27.1/rust
+    javascript:
+     - /home/codespace/.local/share/gh/extensions/gh-codeql/dist/release/v2.27.1/javascript
+    csv:
+     - /home/codespace/.local/share/gh/extensions/gh-codeql/dist/release/v2.27.1/csv
+    actions:
+     - /home/codespace/.local/share/gh/extensions/gh-codeql/dist/release/v2.27.1/actions
+    yaml:
+     - /home/codespace/.local/share/gh/extensions/gh-codeql/dist/release/v2.27.1/yaml
+    cpp:
+     - /home/codespace/.local/share/gh/extensions/gh-codeql/dist/release/v2.27.1/cpp
+    swift:
+     - /home/codespace/.local/share/gh/extensions/gh-codeql/dist/release/v2.27.1/swift
+    python:
+     - /home/codespace/.local/share/gh/extensions/gh-codeql/dist/release/v2.27.1/python
+    go:
+     - /home/codespace/.local/share/gh/extensions/gh-codeql/dist/release/v2.27.1/go
+    properties:
+     - /home/codespace/.local/share/gh/extensions/gh-codeql/dist/release/v2.27.1/properties
+    html:
+     - /home/codespace/.local/share/gh/extensions/gh-codeql/dist/release/v2.27.1/html
+    xml:
+     - /home/codespace/.local/share/gh/extensions/gh-codeql/dist/release/v2.27.1/xml
+    java:
+     - /home/codespace/.local/share/gh/extensions/gh-codeql/dist/release/v2.27.1/java
+    ruby:
+     - /home/codespace/.local/share/gh/extensions/gh-codeql/dist/release/v2.27.1/ruby
+    csharp:
+     - /home/codespace/.local/share/gh/extensions/gh-codeql/dist/release/v2.27.1/csharp
+creationMetadata:
+  cliVersion: 2.27.1
+  creationTime: 2026-09-23T01:16:39.270310940Z
+overlayBaseDatabase: false
+overlayDatabase: false
+finalised: false
