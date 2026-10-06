@@ -1,13 +1,27 @@
 # AI Hallucination Detection and STRIDE Threat Modeling
 
+## Codespace Validation Addendum (6 October 2026)
+
+This addendum supersedes earlier statements in this document that runtime, compilation, or live permission checks were pending. The user supplied actual screenshots/terminal output from `/workspaces/CYBR621/lab2` on branch `main`; results below are reported only for what those captures show.
+
+Both checked-in source files fail to compile as captured. `gcc -fsyntax-only assistant1.c` exited 1 with errors including unknown type `FILE`, implicit `fopen`, and top-level `if`/return. Compiling `assistant2.c` failed at line 102 with “expected declaration or statement at end of input.” Thus source-level observations remain limited to visible text, and the prebuilt `assistant2` executable must not be treated as a build of the current source. The tracked source and binary timestamps differ, as do the CodeQL database/SARIF and source timestamps; the scan is not demonstrated to analyze the exact current source snapshot.
+
+The existing prebuilt `assistant2` was tested from a temporary directory using a copy of `userlog.txt`. It accepted caller-supplied `administrator` and wrote “Successful login.” It also accepted a message containing a newline, producing a second apparent line, “FORGED administrator event.” The 5,000-character input was rejected with “Invalid log message. Must be non-empty and under 256 characters.” and exit status 1. These are observed behaviors of that binary only, not proof of matching checked-in source behavior. The test log copy grew from 146 to 304 bytes after the two accepted entries. The separate `TAMPERED LOG ENTRY` append was made to that temporary copy, not the tracked/live original log.
+
+The captured `assistant1` executable was absent. The last capture showed `git status --short` empty, confirming no tracked modifications at that check. Permissions varied across the user’s captures: latest `stat` showed `userlog.txt` mode 600, `assistant2` mode 777 and `assistant2.c` mode 666; prior captures showed the log as 666 and 660. The cause of this variation is unknown; no stable mode is claimed. The captured `umask` was 0022. The observed executable mode had no SUID/SGID marker. A world-writable executable is a code-integrity concern wherever other users can write that inode, but the captures do not establish a multi-user attacker or privileged execution.
+
+For STRIDE, the tested binary demonstrates caller-selected labels and newline log forging. The temporary-copy append demonstrates only that the acting account could modify that copy. It does not establish remote or unauthorized tampering. The copied log's size increase illustrates bounded per-record input does not bound aggregate storage; no repeated-write exhaustion test was performed. The SARIF still contains the two recorded findings, but its age relative to source means it should be treated as a historical scan artifact until regenerated against a complete, identified source revision.
+
+
+
 **CYB 621 — Secure System Programming and OS Theory**  
 **Lab 3 | Weeks 5–6**
 
 ## Introduction and Mission
 
-This analysis evaluates the security claims an AI assistant can make about the Lab 2 logging utility and models the utility with STRIDE. The checked-in `assistant2.c` provides some useful input bounds and formatting checks, but it still permits newline injection, trusts a caller-supplied username, opens a relative path, and calls `localtime()`. The checked-in `assistant1.c` is only a 351-byte code fragment, not a complete translation unit. Its behavior cannot be established as a runnable program from this repository snapshot. The SARIF file contains two findings, both in `assistant2.c`; neither alone proves an exploitable vulnerability.
+This analysis evaluates the security claims an AI assistant can make about the Lab 2 logging utility and models the utility with STRIDE. The visible `assistant2.c` text provides input bounds and formatting checks, but appears to allow newline injection, trusts a caller-supplied username, opens a relative path, and calls `localtime()`. It fails compilation in the Codespace, so its runtime behavior is unverified. The checked-in `assistant1.c` is only a 351-byte code fragment, not a complete translation unit. Its behavior cannot be established as a runnable program from this repository snapshot. The SARIF file contains two findings, both in `assistant2.c`; neither alone proves an exploitable vulnerability.
 
-The five AI responses below were generated in this chat against the repository files. Each is recorded as written, then checked against the source, SARIF, and Linux API documentation. Runtime and permission observations that require the Lab 2 Codespace are explicitly left for capture rather than inferred.
+The five AI responses below were generated in this chat against the repository files. Each is checked against source, SARIF, Linux API documentation, and the Codespace evidence addendum below. Distinctions between checked-in source, stale scan artifacts, and the prebuilt executable are explicit.
 
 ## Repository and Environment Evidence
 
@@ -16,7 +30,7 @@ Repository: [`aele1401/CYBR621`](https://github.com/aele1401/CYBR621), branch `m
 | Requested artifact | Repository state observed |
 |---|---|
 | `assistant1.c` | Present, 351 bytes; contains only statements referring to `file` and `argv`, without headers or a function/`main` wrapper. |
-| `assistant2.c` | Present, 3,357 bytes; complete `main`, validation helpers, timestamp formatting, and file I/O. |
+| `assistant2.c` | Present, 3,357 bytes; appears to contain validation, timestamp, and I/O logic, but is incomplete and fails compilation at line 102 in the Codespace. |
 | `assistant1`, `assistant1.o` | Not present in the tracked `lab2/` directory listing. |
 | `assistant2`, `assistant2.o` | Present (binary/object are tracked). |
 | `userlog.txt` | Present, 146 bytes in the GitHub snapshot; contains two timestamped `student2` records. |
@@ -53,7 +67,7 @@ The second search does not match `snprintf` because the requested pattern is the
 
 ### 2. Log Injection and Forging
 
-**AI response:** “The visible `assistant1.c` fragment inserts both command-line strings into a line with `fprintf` and shows no CR/LF filtering. In `assistant2.c`, the username is restricted to alphanumeric characters and underscores, but `validate_message` checks only nonempty length; it does not reject carriage return or newline. Since the message is then included in the record passed to `fputs`, a message containing CR/LF can create additional apparent records. This is a source-supported injection path; a runtime demonstration still needs to be captured in the Codespace.”
+**AI response:** “The visible `assistant1.c` fragment inserts both command-line strings into a line with `fprintf` and shows no CR/LF filtering. In `assistant2.c`, the username is restricted to alphanumeric characters and underscores, but `validate_message` checks only nonempty length; it does not reject carriage return or newline. Since the message is then included in the record passed to `fputs`, a message containing CR/LF has a source-supported injection path. A user-captured run of the existing prebuilt `assistant2` in a temporary directory confirms a newline created a separate apparent line; source/binary correspondence is not established.”
 
 **Significant claims:** `assistant2` restricts username characters but not message CR/LF; `fputs` writes the assembled message; line forgery is possible at the source level.
 
