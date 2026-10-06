@@ -1,8 +1,50 @@
 # Lab 3 Evidence and Screenshot Checklist
 
+## Live Codespace Results Supplied by User (6 October 2026)
+
+The following are transcriptions of screenshots/terminal output the user supplied from `/workspaces/CYBR621/lab2`, branch `main`. They are actual reported observations, not recreated command output. Original Lab 2 source files were not edited. At the final check, `git status --short` produced no output.
+
+### Compilation and buildability
+
+- `gcc -fsyntax-only assistant1.c` exited 1. The compiler reported unknown type `FILE`, implicit declaration of `fopen`, and top-level `if`/return syntax errors. The tracked file is a fragment, not a compilable translation unit.
+- Compiling `assistant2.c` failed at line 102: “expected declaration or statement at end of input.” The attempted temporary output binary was not created; subsequent calls to it returned “No such file or directory.”
+- Therefore the actual runtime experiments used the preexisting `assistant2` executable. Its timestamp predates `assistant2.c`; repository screenshot timestamps also show the CodeQL database/SARIF predating the source. No evidence establishes that either binary or SARIF corresponds to the exact current source. The following runtime results must be attributed to the prebuilt binary only.
+
+### Prebuilt binary behavior in isolated test directory
+
+The user copied `userlog.txt` to a temporary directory and ran the existing `assistant2` by absolute path from that directory. The captured output shows:
+
+- `administrator "Successful login"` was accepted and wrote a record with user label `administrator`.
+- A `student1` message containing newline plus `FORGED administrator event` was accepted. The temporary log showed the second text as a separate apparent line.
+- A 5,000-character message was rejected with `Error: Invalid log message. Must be non-empty and under 256 characters.`; reported exit status was 1.
+- Copied log size was 146 bytes before these accepted tests and 304 bytes afterwards. This confirms individual input bounds on this binary do not bound aggregate log growth; it does not demonstrate storage exhaustion.
+- `TAMPERED LOG ENTRY` was appended to the temporary copy, and appeared in its tail. This demonstrates ability to modify that copy in the test account/context only. It does not demonstrate remote or unauthorized tampering of the original log.
+
+### Permission and privilege captures
+
+- Captured `umask`: `0022`.
+- Permission observations are inconsistent across screenshots: one showed `userlog.txt` mode 666; a later same-run check showed 660; the final capture showed `userlog.txt` 600, `assistant2` 777, and `assistant2.c` 666. Cause is unknown. Report the final capture as the latest observation and disclose prior drift; do not infer a stable file mode.
+- `assistant1` executable was absent. `assistant2` was executable and mode 777 in the final capture. No SUID/SGID marker was visible in its mode string. The observed broad write permission on the binary is a code-integrity concern in a shared context, but no attacker action, setuid execution, or privilege escalation was demonstrated.
+- Final clean `git status --short` is evidence that no tracked modifications remained at that moment.
+
+## Screenshot/Evidence Checklist Status
+
+The user has already shared screenshots covering repository contents, permissions/SARIF, compilation failures and temporary-copy experiments, runtime identity/newline behavior, and final Git/mode check. Preserve the original image files from the conversation and attach/embed roughly 5–7 of them in the submitted assignment. Add a screenshot of a significant AI response from this conversation if the instructor expects an AI-response image. Do not present a text transcription as a screenshot.
+
+1. **Repository/Codespace listing** — captured. Shows path, branch, root Lab 2 contents, missing `assistant1` binary, and existing artifacts. Meaning: documents the working Codespace snapshot.
+2. **Baseline source/compile evidence** — captured. Includes grep/source and compile failures. Meaning: shows visible source operations and confirms both .c files are not currently buildable; retain errors accurately.
+3. **Significant AI response** — still needs a screenshot captured from the AI conversation. Meaning: preserves the claim text evaluated against code and runtime evidence.
+4. **CodeQL findings** — captured. SARIF count is 2: `cpp/potentially-dangerous-function` at `assistant2.c:66` and `cpp/world-writable-file-creation` at `assistant2.c:58`. Meaning: records findings from the checked-in SARIF; scan/source currency is uncertain.
+5. **umask/stat permissions** — captured, but multiple captures show differing log modes. Use the final/latest mode capture and note the earlier 666 and 660 observations. Meaning: evidence of observed deployment state with unexplained variation, not a stable permission guarantee.
+6. **Claim validation runtime evidence** — captured. Existing binary accepted an arbitrary username and newline-forged text. Meaning: confirms those behaviors for the prebuilt executable; binary/source match was not established.
+7. **Optional STRIDE experiment** — captured. Oversized input rejection, temporary-log growth, and append to temporary copy. Meaning: individual input bound and current-account ability to append to its test copy; not proof of exhaustion or unauthorized tampering.
+
+The captures were shown in chat, not committed as image files in the GitHub repository. Manually attach/embed the chosen 5–7 actual screenshots in the submission and keep the explanatory “What I tested / What happened / What it means” captions with each.
+
+
 ## Evidence Provenance and Limits
 
-Repository inspected: [`aele1401/CYBR621`](https://github.com/aele1401/CYBR621), `main`, `lab2/`. The connected GitHub tool supplied repository text, file names and SARIF. It does not provide an interactive Codespace terminal or live filesystem metadata. Therefore, commands below are the exact Codespace evidence still to capture. No command result in this file is represented as having been executed in the Codespace.
+Repository inspected: [`aele1401/CYBR621`](https://github.com/aele1401/CYBR621), `main`, `lab2/`. Initial repository inspection used GitHub contents/SARIF. The user subsequently supplied terminal screenshots and output from the active Codespace; those live results are transcribed in the addendum below. Any older checklist sentence saying all commands remain pending is superseded by that addendum.
 
 The final analysis is based on checked-in `assistant1.c` (351 bytes), `assistant2.c` (3,357 bytes), `README.MD`, `userlog.txt` (146 bytes), and `codeql-results.sarif` (180,478 bytes). Repository file listing shows `assistant2` and `assistant2.o`; it does not show `assistant1` or `assistant1.o`. It also lists `codeql-db/`, `codeql-db-assistant2/`, and `codeql-db-remediated/`. The exact content snapshots can be reviewed at [assistant1.c](https://github.com/aele1401/CYBR621/blob/main/lab2/assistant1.c), [assistant2.c](https://github.com/aele1401/CYBR621/blob/main/lab2/assistant2.c), [SARIF](https://github.com/aele1401/CYBR621/blob/main/lab2/codeql-results.sarif), and [userlog.txt](https://github.com/aele1401/CYBR621/blob/main/lab2/userlog.txt).
 
@@ -88,7 +130,7 @@ If `assistant1` is absent, do not treat that as a successful baseline run or bui
 
 ## Screenshot Checklist (Capture 5–7)
 
-The following are the exact screenshots still needed. Under each captured image in the submission, include the three labelled notes shown here.
+The checklist below initially describes desired screenshots. Status is updated in the Live Codespace Results section above; embed the actual originals manually, since screenshots shared in chat are not automatically stored in the repository.
 
 ### 1. Codespace and repository contents
 
