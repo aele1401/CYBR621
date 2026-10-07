@@ -166,8 +166,63 @@ An engineer should treat each AI security statement as a hypothesis and have a r
 
 AI security analysis should not be trusted without independent validation. In this review, the assistant did well when it tied buffer-overflow reasoning to an actual write operation, separated source behavior from a CodeQL alert, and qualified `localtime()` risk by architecture. It also identified `assistant2.c` as the stronger starting point based on input bounds, checked formatting, and I/O error handling. The important omissions are that `assistant2` accepts CR/LF in messages, accepts a caller-selected username, relies on `umask` and a relative path, and uses `localtime()`. Its repository SARIF has two findings, not the instructor example's three; neither finding proves exploitation. The `assistant1.c` repository file is incomplete, preventing a valid runtime comparison. The most useful evidence was the actual source, exact SARIF locations/messages, and Linux API documentation. Before accepting AI advice, an engineer should inspect the complete source and deployment, validate API semantics, run static analysis, verify permissions and runtime behavior, and preserve the evidence behind each conclusion.
 
-## Screenshot and Evidence Checklist
+## Screenshot Evidence
 
-The required screenshots are not attached to this report. Capture 5–7 screenshots in the Codespace and put the “What I tested / What happened / What it means” explanation beneath each. The exact commands and interpretation guide are in [`LAB3_EVIDENCE.md`](LAB3_EVIDENCE.md).
+The seven original screenshots supplied for this lab are embedded below. Captions identify what was tested, what the capture shows, and what it means. The AI-response capture predates the later runtime test, so its statement that runtime confirmation was pending is preserved as part of the claim history. The subsequent test applies to the prebuilt assistant2 binary only; it does not prove behavior of the checked-in source, which failed compilation.
 
+### 1. Repository contents
+
+![Screenshot 1: Lab 2 Codespace repository listing](screenshots/lab3-01-repo.png)
+
+**What I tested:** Whether the Codespace in /workspaces/CYBR621/lab2 contained the Lab 2 source, binaries, CodeQL artifacts, and log.  
+**What happened:** The listing shows assistant1.c, assistant2.c, the prebuilt assistant2, SARIF and CodeQL databases, and userlog.txt; it does not show an assistant1 executable. The attempted ls -la lab2 reports no such subdirectory because the prompt is already inside lab2.  
+**What it means:** This records the actual Codespace location and artifacts, including the absence of the first program’s executable.
+
+### 2. Permissions and CodeQL results
+
+![Screenshot 2: Codespace permissions and CodeQL findings](screenshots/lab3-02-permissions-codeql.png)
+
+**What I tested:** The current umask, observed file modes, presence of executables, and number/details of SARIF results.  
+**What happened:** The capture shows umask 0022, userlog.txt mode 600, assistant2 mode 777, no assistant1 executable, and two SARIF findings: localtime at line 66 and world-writable file creation at line 58.  
+**What it means:** CodeQL identifies review targets; the mode 600 is the observed log mode in this capture. The 777 executable mode is a code-integrity concern in a shared context, but no privileged execution or exploit is shown.
+
+### 3. assistant1.c compile check
+
+![Screenshot 3: assistant1.c syntax check](screenshots/lab3-03-source-compile-assistant1.png)
+
+**What I tested:** Whether the checked-in assistant1.c compiles as a standalone C translation unit.  
+**What happened:** gcc -fsyntax-only assistant1.c reports errors including unknown type FILE, an implicit fopen, and statements where a declaration or function body is required.  
+**What it means:** The checked-in file is an incomplete fragment, so this compile attempt cannot establish runtime behavior for an assistant1 program.
+
+### 4. assistant2.c compile attempt and temporary-copy append
+
+![Screenshot 4: assistant2.c build failure and temporary log copy](screenshots/lab3-04-source-compile-assistant2.png)
+
+**What I tested:** Whether assistant2.c could produce the temporary test executable; the command sequence also attempted test-copy actions.  
+**What happened:** Compilation fails at line 102 with “expected declaration or statement at end of input.” Calls to the expected temporary executable then report “No such file or directory.” The screenshot shows TAMPERED LOG ENTRY in the copied log after the append operation.  
+**What it means:** No runtime behavior can be attributed to the attempted source build. The append demonstrates modification of that temporary copy in the testing context only, not unauthorized or remote tampering of the original log.
+
+### 5. Existing prebuilt binary runtime tests
+
+![Screenshot 5: prebuilt assistant2 runtime tests](screenshots/lab3-05-runtime-tests-prebuilt-binary.png)
+
+**What I tested:** The existing assistant2 binary in a temporary directory, using a copy of the log, with a caller-selected username, an embedded newline, and a 5,000-character message.  
+**What happened:** The binary accepted the label administrator, wrote a separate apparent line for the newline-containing message, rejected the 5,000-character message with exit status 1, and the copied log grew from 146 to 304 bytes after the accepted entries.  
+**What it means:** These results demonstrate spoofable labels, newline log forging, and per-message length rejection for this prebuilt binary. They do not prove the checked-in assistant2.c has the same behavior because that source failed compilation and binary/source correspondence was not established.
+
+### 6. Final repository status and modes
+
+![Screenshot 6: final git status and file modes](screenshots/lab3-06-final_status.png)
+
+**What I tested:** Whether the experiments left tracked repository changes and the final observed modes of the log, executable, and source.  
+**What happened:** git status --short is empty; the shown modes are userlog.txt 600, assistant2 777, and assistant2.c 666.  
+**What it means:** No tracked changes remained at that check. These are point-in-time permissions; other captures showed different userlog.txt modes, and the reason for that variation is unknown.
+
+### 7. AI response being evaluated
+
+![Screenshot 7: AI response about log injection](screenshots/lab3-07-AI_Response.png)
+
+**What I tested:** Whether the AI’s source-based claim about CR/LF handling matched the available evidence.  
+**What happened:** The captured response states that assistant2.c did not reject CR/LF and says runtime confirmation was still pending at that point in the conversation.  
+**What it means:** This preserves the claim as originally made. Later evidence confirmed newline forging for the prebuilt binary only; because the checked-in source does not compile, its runtime behavior remains unverified.
 
